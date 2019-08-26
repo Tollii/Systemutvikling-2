@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="oving1.css">
+    <title>Hong Kong</title>
+    <script type="text/javascript">
+      function changeImage(source, name){
+        var img = document.getElementById("logo");
+        img.src=source;
+        document.getElementById("title").innerHTML = name;
+        return false;
+      }
+    </script>
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="logodiv">
+        <img id="logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Regional_Emblem_of_Hong_Kong.svg/512px-Regional_Emblem_of_Hong_Kong.svg.png" alt="Hong Kong SAR flag">
+      </div>
+      <div class="buttondiv">
+        <h1 id="title" >Hong Kong SAR</h1>
+          <p id="lorem">
+            Hong Kong (/ˌhɒŋˈkɒŋ/ Chinese: 香港, Hong Kong Cantonese: [hœ́ːŋ.kɔ̌ːŋ], officially the Hong Kong Special Administrative Region of the People's Republic of China, is a special administrative region on the eastern side of the Pearl River estuary in southern China. With over 7.4 million people of various nationalities[d] in a 1,104-square-kilometre (426 sq mi) territory, Hong Kong is one of the most densely populated places in the world.
+
+Originally a sparsely populated area of farming and fishing villages, Hong Kong island became a colony of the British Empire at the end of the First Opium War in 1842, followed by Kowloon in 1860 after the Second Opium War, and the modern territory was completed in 1898 with a 99 year British lease over the New Territories, which comprise 86% of Hong Kong's land.[16] Sovereignty over the territory was restored to China in 1997. As a special administrative region, Hong Kong maintains governing and economic systems separate from those of mainland China. Its people tend to identify as Hongkongers rather than Chinese.
+
+Today the territory has become one of the world's most significant financial centres and commercial ports. It was estimated to be the world's tenth-largest exporter, ninth-largest importer and seventh-largest trading entity, and its legal tender (the Hong Kong dollar) is the world's 13th-most traded currency. Hong Kong hosts the largest concentration of ultra high-net-worth individuals of any city in the world, and has one of the worlds's highest per capita incomes, but it also has severe income inequality.
+
+Hong Kong is classified as an alpha+ global city, indicating its influence throughout the world. It is one of the most significant global financial centres, holding the highest Financial Development Index score and consistently ranking as the most competitive and freest economic area in the world in 2012, 2016, and 2017. The city has the largest number of skyscrapers, most surrounding Victoria Harbour. It consistently ranks high on the Human Development Index, and has one of the world's highest life expectancies. Over 90 percent of its population uses public transportation; however, air pollution from neighbouring industrial areas of mainland China has caused a high level of atmospheric particulates in the region.
+          </p>
+          <button id="brit" class="button" type="button" onclick="changeImage('https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Flag_of_Hong_Kong_%281959–1997%29.svg/1200px-Flag_of_Hong_Kong_%281959–1997%29.svg.png', 'British Hong Kong');">British Hong Kong</button>
+          <button id="hk" class="button" type="button" onclick="changeImage('https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Flag_of_Hong_Kong.svg/2560px-Flag_of_Hong_Kong.svg.png', 'Hong Kong SAR');">Hong Kong SAR</button>
+    <div class="footer">
+      <footer>
+        <a id="link" href="https://en.wikipedia.org/wiki/Hong_Kong" target="_blank">Wikipedia</a>
+      </footer>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,81 @@
+html{
+  font-size: 20px;
+  font-family: arial;
+  background-image: url("http://prod-upp-image-read.ft.com/aeea5de6-8cfa-11e9-a1c1-51bf8f989972");
+}
+
+body{
+  margin: 50px 50px 50px 50px;
+}
+
+.wrapper{
+  text-align: center;
+  display: grid;
+  grid-gap: 20px 20px;
+  grid-template-columns: repeat(1, 1fr);
+  grid-template-rows: repeat(2, 0.5fr);
+  grid-area:
+  "header header header"
+  "content content content"
+  "footer footer footer";
+  justify-content: center;
+  align-items: center;
+  border-style: solid;
+  border-radius: 10px;
+  background-color: rgba(255, 0, 0, 0.5);
+}
+
+#title{
+  color: white;
+}
+
+#logo{
+  max-width: 30%;
+  heigh: auto;
+  padding-top: 1%;
+}
+
+#lorem{
+  text-align: left;
+  color: white;
+  background-color: rgba(255,0,0,0.5);
+  padding: 20px 20px 20px 20px;
+  margin: 20px 20px 20px 20px;
+  border-style: solid;
+  border-radius: 10px;
+  border-color: black;
+}
+
+.logodiv{
+  grid-column: 2;
+  text-align: center;
+}
+
+.buttondiv{
+  grid-column: 2;
+  grid-row: 2;
+  padding: 30px;
+}
+
+.button:hover {
+  background-color: #A9A9A9;
+  color: white;
+}
+
+#link{
+  color: white;
+}
+
+#link:hover{
+  color: grey;
+}
+
+.footer{
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: rgba(255,0,0,0.5);
+  color: white;
+  text-align: center;
+}
