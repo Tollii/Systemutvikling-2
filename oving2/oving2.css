@@ -22,3 +22,21 @@ html{
   border-radius: 10px;
   text-align: center;
 }
+
+.html0{
+  background-color: rgba(255, 0, 0, 0.5);
+}
+
+.html1{
+  background-color: rgba(255, 192, 203, 0.5);
+}
+
+.html2{
+  background-color: rgba(255, 255, 153, 0.5);
+}
+.html3{
+  background-color: rgba(124, 200, 0);
+}
+.html4{
+  background-color: rgba(0, 255, 0, 0.5);
+}
