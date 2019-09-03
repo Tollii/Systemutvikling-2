@@ -1,0 +1,12 @@
+{
+	"name": "huge_package",
+	"version": "0.0.1",
+	"dependencies": {
+		"express": "^4.16.3",
+		"mysql": "^2.16.0",
+		"body-parser": "^1.18.3"
+	},
+	"devDependencies": {
+		"@types/node": "^12.7.3"
+	}
+}
