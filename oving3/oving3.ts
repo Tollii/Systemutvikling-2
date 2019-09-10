@@ -1,14 +1,80 @@
 const express = require("express");
+const mysql = require("mysql");
+const bodyParser = require("body-parser");
+
 const app = express();
 
-app.get("/hello", (req, res) => {
-  res.send("Henlo, world");
+
+
+const pool = mysql.createPool({
+  connectionLimit: 2,
+  host: "...",
+  user: "...",
+  password: "...",
+  database: "...",
+  debug: false
 });
 
-app.get("/hello2", (req, res) => {
-  res.json({"hello world": "Hello world"});
+app.get("/person", (req:any, res:any) => {
+  console.log("Fetched request form server");
+  pool.getConnection((err:any, connection:any) => {
+    console.log("Connected to database");
+    if(err){
+      console.log("Connection error");
+      res.json({error: "Connection error"});
+    } else {
+      connection.queryy(
+        "SELECT nav, alder adresse FROM person",
+        (err:any, rows:any) => {
+          connection.release();
+          if(err){
+            console.log(err);
+            res.json({error: "Query error"});
+          } else {
+            console.log(rows);
+            res.json(rows);
+          }
+        }
+      );
+    }
+  });
 });
 
-var server = app.listen(8080);
+app.use(bodyParser.json());
 
-process.on('SIGTERM', server.close());
+app.post("/test", (req:any, res:any) => {
+  console.log("Recieved POST-request from client");
+  console.log("... " + req.body.navn);
+  res.status(200);
+  res.json({message: "success"});
+});
+
+app.post("/person", (req:any ,res:any) =>{
+  console.log("Recieved POST-request from client");
+  console.log("..." + req.body.navn);
+  pool.getConnection((err:any, connection:any) => {
+    if(err){
+      console.log("Connection error");
+      res.json({error: "Connection error"});
+    } else {
+      console.log("Established connection to database");
+      const val = [req.body.navn, req.body.adresse, req.body.alder];
+      connection.query(
+        "INSERT INTO person (navn, adresse, alder) VALUES (?,?,?)",
+        val,
+        err => {
+          if(err) {
+            console.log(err);
+            res.status(500);
+            res.json({error: "Error with INSERT"});
+          } else {
+            console.log("Success");
+            res.send("");
+          }
+        }
+      );
+    }
+  });
+})
+
+const server = app.listen(8080);
