@@ -4,18 +4,16 @@ const bodyParser = require("body-parser");
 
 const app = express();
 
-
-
 const pool = mysql.createPool({
   connectionLimit: 2,
-  host: "...",
-  user: "...",
-  password: "...",
-  database: "...",
+  host: "mysql-ait.stud.idi.ntnu.no",
+  user: "andrtoln",
+  password: "7ChfTzkc",
+  database: "andrtoln",
   debug: false
 });
 
-app.get("/person", (req:any, res:any) => {
+app.get("/article", (req:any, res:any) => {
   console.log("Fetched request form server");
   pool.getConnection((err:any, connection:any) => {
     console.log("Connected to database");
@@ -23,8 +21,8 @@ app.get("/person", (req:any, res:any) => {
       console.log("Connection error");
       res.json({error: "Connection error"});
     } else {
-      connection.queryy(
-        "SELECT nav, alder adresse FROM person",
+      connection.query(
+        "SELECT title, article_text, created_at, image, importance FROM article",
         (err:any, rows:any) => {
           connection.release();
           if(err){
@@ -42,25 +40,18 @@ app.get("/person", (req:any, res:any) => {
 
 app.use(bodyParser.json());
 
-app.post("/test", (req:any, res:any) => {
+app.post("/article", (req:any ,res:any) =>{
   console.log("Recieved POST-request from client");
-  console.log("... " + req.body.navn);
-  res.status(200);
-  res.json({message: "success"});
-});
-
-app.post("/person", (req:any ,res:any) =>{
-  console.log("Recieved POST-request from client");
-  console.log("..." + req.body.navn);
+  console.log("..." + req.body.title + " " + req.body.article_text + " " + req.body.importance);
   pool.getConnection((err:any, connection:any) => {
     if(err){
       console.log("Connection error");
       res.json({error: "Connection error"});
     } else {
       console.log("Established connection to database");
-      const val = [req.body.navn, req.body.adresse, req.body.alder];
+      const val = [req.body.title, req.body.article_text, req.body.importance];
       connection.query(
-        "INSERT INTO person (navn, adresse, alder) VALUES (?,?,?)",
+        "INSERT INTO article (title, article_text, importance) VALUES (?,?,?)",
         val,
         err => {
           if(err) {
@@ -74,7 +65,9 @@ app.post("/person", (req:any ,res:any) =>{
         }
       );
     }
-  });
-})
+  })});
+
+
+
 
 const server = app.listen(8080);

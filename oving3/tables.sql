@@ -13,6 +13,7 @@ CREATE TABLE article(
 CREATE TABLE tags(
     tag_id INT UNSIGNED AUTO_INCREMENT,
     tag VARCHAR(20) NOT NULL,
+    article_id INT UNSIGNED NOT NULL,
     PRIMARY KEY (tag_id),
-    FOREIGN KEY (article_id) REFERENCES borettslag(article_id)
+    FOREIGN KEY (article_id) REFERENCES article(article_id)
   );

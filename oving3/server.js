@@ -4,13 +4,13 @@ const bodyParser = require("body-parser");
 const app = express();
 const pool = mysql.createPool({
     connectionLimit: 2,
-    host: "...",
-    user: "...",
-    password: "...",
-    database: "...",
+    host: "mysql-ait.stud.idi.ntnu.no",
+    user: "andrtoln",
+    password: "7ChfTzkc",
+    database: "andrtoln",
     debug: false
 });
-app.get("/person", (req, res) => {
+app.get("/article", (req, res) => {
     console.log("Fetched request form server");
     pool.getConnection((err, connection) => {
         console.log("Connected to database");
@@ -19,7 +19,7 @@ app.get("/person", (req, res) => {
             res.json({ error: "Connection error" });
         }
         else {
-            connection.queryy("SELECT nav, alder adresse FROM person", (err, rows) => {
+            connection.query("SELECT title, article_text, created_at, image, importance FROM article", (err, rows) => {
                 connection.release();
                 if (err) {
                     console.log(err);
@@ -34,15 +34,9 @@ app.get("/person", (req, res) => {
     });
 });
 app.use(bodyParser.json());
-app.post("/test", (req, res) => {
+app.post("/article", (req, res) => {
     console.log("Recieved POST-request from client");
-    console.log("... " + req.body.navn);
-    res.status(200);
-    res.json({ message: "success" });
-});
-app.post("/person", (req, res) => {
-    console.log("Recieved POST-request from client");
-    console.log("..." + req.body.navn);
+    console.log("..." + req.body.title + " " + req.body.article_text + " " + req.body.importance);
     pool.getConnection((err, connection) => {
         if (err) {
             console.log("Connection error");
@@ -50,8 +44,8 @@ app.post("/person", (req, res) => {
         }
         else {
             console.log("Established connection to database");
-            const val = [req.body.navn, req.body.adresse, req.body.alder];
-            connection.query("INSERT INTO person (navn, adresse, alder) VALUES (?,?,?)", val, err => {
+            const val = [req.body.title, req.body.article_text, req.body.importance];
+            connection.query("INSERT INTO article (title, article_text, importance) VALUES (?,?,?)", val, err => {
                 if (err) {
                     console.log(err);
                     res.status(500);
