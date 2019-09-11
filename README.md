@@ -4,3 +4,5 @@
 * Øving 1 - [HTML/CSS](/oving1)
 
 * Øving 2 - [fetch](/oving2)
+
+* Øving 3 - [REST API](/oving3)
