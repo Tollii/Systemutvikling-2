@@ -9,10 +9,21 @@
 
 * Øving 4 - [Authentication](/oving4)
 
-* Øving 5 - [CI and JESt](/oving5)
+* Øving 5 - [CI and JEST](/oving5)
 
 * Øving 6 - [MMI - Uniform Design](/oving6)
 
+* Øving 7 - ...
+
 * Øving 8 - [MMI - Interaction Design](/oving8)
 
+* Øving 9 - ...
+
 * Øving 10 - [MMI - Testing](/oving10)
+
+* Øving 11 - ...
+
+* Øving 12 - ...
+
+* Øving 13 - ...
+
