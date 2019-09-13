@@ -10,17 +10,6 @@ const pool = mysql.createPool({
   database: "andrtoln",
   debug: false
 });
-
-const getBase64Image = imgElem => {
-
-}
-
-
-
-
-
-
-
 app.use(bodyParser.json());
 
 // Fetches all articles, or the given article identified with article_id in the URI
