@@ -19,7 +19,7 @@ app.get("/article", (req, res) => {
             res.json({ error: "Connection error" });
         }
         else {
-            connection.query("SELECT title, article_text, created_at, image, importance FROM article", (err, rows) => {
+            connection.query("SELECT article_id, title, article_text, created_at, image, importance FROM article", (err, rows) => {
                 connection.release();
                 if (err) {
                     console.log(err);
@@ -53,7 +53,55 @@ app.post("/article", (req, res) => {
                 }
                 else {
                     console.log("Success");
-                    res.send("");
+                    res.send("Record has been created");
+                }
+            });
+        }
+    });
+});
+app.delete("/article", (req, res) => {
+    console.log("Recieved DELETE-request from client");
+    pool.getConnection((err, connection) => {
+        if (err) {
+            console.log("Connection error");
+            res.json({ error: "Connection error" });
+        }
+        else {
+            console.log("Established connection to database");
+            connection.query(`DELETE FROM article WHERE article_id = ?;`, [req.body.id], err => {
+                if (err) {
+                    console.log(err);
+                    res.status(500);
+                    res.json({ error: "Error with DELETE" });
+                }
+                else {
+                    console.log("Success");
+                    res.send("Record has been deleted");
+                }
+            });
+        }
+    });
+});
+app.put("/article", (req, res) => {
+    console.log("Recieved PUT-request form client");
+    pool.getConnection((err, connection) => {
+        if (err) {
+            console.log("Connection error");
+            res.json({ error: "Connection error" });
+        }
+        else {
+            console.log("Established connection to database");
+            const val = [req.body.title, req.body.article_text, req.body.importance, req.body.id];
+            console.log(val);
+            connection.query(`UPDATE article SET title = ?, article_text = ?, importance = ? WHERE article_id = ?;`, val, err => {
+                if (err) {
+                    console.log(err);
+                    res.status(500);
+                    res.json({ error: "Error with PUT" });
+                }
+                else {
+                    console.log("Success");
+                    res.send("Record has been updated");
                 }
             });
         }

@@ -17,3 +17,6 @@ CREATE TABLE tags(
     PRIMARY KEY (tag_id),
     FOREIGN KEY (article_id) REFERENCES article(article_id)
   );
+
+
+# DELETE FROM article WHERE article_id = x;
