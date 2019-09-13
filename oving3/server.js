@@ -10,8 +10,11 @@ const pool = mysql.createPool({
     database: "andrtoln",
     debug: false
 });
+const getBase64Image = imgElem => {
+};
+app.use(bodyParser.json());
 // Fetches all articles, or the given article identified with article_id in the URI
-app.get("/article/:id", (req, res) => {
+app.get("/article/:id?", (req, res) => {
     console.log("Fetched request form server");
     pool.getConnection((err, connection) => {
         console.log("Connected to database");
@@ -21,10 +24,12 @@ app.get("/article/:id", (req, res) => {
         }
         else {
             let query = "SELECT article_id, title, article_text, created_at, image, importance FROM article";
+            let val;
             if (req.params.id) {
-                query = `SELECT article_id, title, article_text, created_at, image, importance FROM article WHERE article_id = ${req.params.id}`;
+                query = `SELECT article_id, title, article_text, created_at, image, importance FROM article WHERE article_id = ?`;
+                val = req.params.id;
             }
-            connection.query(query, (err, rows) => {
+            connection.query(query, val, (err, rows) => {
                 connection.release();
                 if (err) {
                     console.log(err);
@@ -38,7 +43,6 @@ app.get("/article/:id", (req, res) => {
         }
     });
 });
-app.use(bodyParser.json());
 // Creates a new article
 // Format: title: String, article_text: string, importance: integer
 app.post("/article", (req, res) => {
@@ -52,7 +56,9 @@ app.post("/article", (req, res) => {
         else {
             console.log("Established connection to database");
             const val = [req.body.title, req.body.article_text, req.body.importance];
-            connection.query("INSERT INTO article (title, article_text, importance) VALUES (?,?,?)", val, err => {
+            const query = "INSERT INTO article (title, article_text, importance) VALUES (?,?,?)";
+            connection.query(query, val, err => {
+                connection.release();
                 if (err) {
                     console.log(err);
                     res.status(500);
@@ -76,11 +82,14 @@ app.delete("/article/:id", (req, res) => {
         }
         else {
             console.log("Established connection to database");
-            connection.query(`DELETE FROM article WHERE article_id = ?;`, [req.params.id], err => {
+            const query = `DELETE FROM article WHERE article_id = ?;`;
+            const val = req.params.id;
+            connection.query(query, val, err => {
                 if (err) {
+                    connection.release();
                     console.log(err);
                     res.status(500);
-                    res.json({ error: "Error with DELETE" });
+                    res.json({ error: "Error with query" });
                 }
                 else {
                     console.log("Success");
@@ -102,12 +111,13 @@ app.put("/article/:id", (req, res) => {
         else {
             console.log("Established connection to database");
             const val = [req.body.title, req.body.article_text, req.body.importance, req.params.id];
-            console.log(val);
-            connection.query(`UPDATE article SET title = ?, article_text = ?, importance = ? WHERE article_id = ?;`, val, err => {
+            const query = `UPDATE article SET title = ?, article_text = ?, importance = ? WHERE article_id = ?;`;
+            connection.query(query, val, err => {
+                connection.release();
                 if (err) {
                     console.log(err);
                     res.status(500);
-                    res.json({ error: "Error with PUT" });
+                    res.json({ error: "Error with INSERT" });
                 }
                 else {
                     console.log("Success");
