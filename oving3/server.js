@@ -10,7 +10,8 @@ const pool = mysql.createPool({
     database: "andrtoln",
     debug: false
 });
-app.get("/article", (req, res) => {
+// Fetches all articles, or the given article identified with article_id in the URI
+app.get("/article/:id", (req, res) => {
     console.log("Fetched request form server");
     pool.getConnection((err, connection) => {
         console.log("Connected to database");
@@ -19,7 +20,11 @@ app.get("/article", (req, res) => {
             res.json({ error: "Connection error" });
         }
         else {
-            connection.query("SELECT article_id, title, article_text, created_at, image, importance FROM article", (err, rows) => {
+            let query = "SELECT article_id, title, article_text, created_at, image, importance FROM article";
+            if (req.params.id) {
+                query = `SELECT article_id, title, article_text, created_at, image, importance FROM article WHERE article_id = ${req.params.id}`;
+            }
+            connection.query(query, (err, rows) => {
                 connection.release();
                 if (err) {
                     console.log(err);
@@ -34,6 +39,8 @@ app.get("/article", (req, res) => {
     });
 });
 app.use(bodyParser.json());
+// Creates a new article
+// Format: title: String, article_text: string, importance: integer
 app.post("/article", (req, res) => {
     console.log("Recieved POST-request from client");
     console.log("..." + req.body.title + " " + req.body.article_text + " " + req.body.importance);
@@ -59,7 +66,8 @@ app.post("/article", (req, res) => {
         }
     });
 });
-app.delete("/article", (req, res) => {
+// Deletes a given article identified with article_id in the URI
+app.delete("/article/:id", (req, res) => {
     console.log("Recieved DELETE-request from client");
     pool.getConnection((err, connection) => {
         if (err) {
@@ -68,7 +76,7 @@ app.delete("/article", (req, res) => {
         }
         else {
             console.log("Established connection to database");
-            connection.query(`DELETE FROM article WHERE article_id = ?;`, [req.body.id], err => {
+            connection.query(`DELETE FROM article WHERE article_id = ?;`, [req.params.id], err => {
                 if (err) {
                     console.log(err);
                     res.status(500);
@@ -82,7 +90,9 @@ app.delete("/article", (req, res) => {
         }
     });
 });
-app.put("/article", (req, res) => {
+// Updates a given article identified with article_id in the URI
+// Format: title: String, article_text: string, importance: integer
+app.put("/article/:id", (req, res) => {
     console.log("Recieved PUT-request form client");
     pool.getConnection((err, connection) => {
         if (err) {
@@ -91,7 +101,7 @@ app.put("/article", (req, res) => {
         }
         else {
             console.log("Established connection to database");
-            const val = [req.body.title, req.body.article_text, req.body.importance, req.body.id];
+            const val = [req.body.title, req.body.article_text, req.body.importance, req.params.id];
             console.log(val);
             connection.query(`UPDATE article SET title = ?, article_text = ?, importance = ? WHERE article_id = ?;`, val, err => {
                 if (err) {
