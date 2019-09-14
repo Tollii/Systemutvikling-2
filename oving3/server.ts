@@ -1,15 +1,15 @@
+const fs = require("fs");
 const express = require("express");
 const mysql = require("mysql");
 const bodyParser = require("body-parser");
+
 const app = express();
-const pool = mysql.createPool({
-  connectionLimit: 2,
-  host: "mysql-ait.stud.idi.ntnu.no",
-  user: "andrtoln",
-  password: "7ChfTzkc",
-  database: "andrtoln",
-  debug: false
-});
+
+// Reads MySQL config file
+const raw = fs.readFileSync('config.json');
+const config = JSON.parse(raw);
+
+const pool = mysql.createPool(config);
 app.use(bodyParser.json());
 
 // Fetches all articles, or the given article identified with article_id in the URI
