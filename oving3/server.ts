@@ -3,18 +3,17 @@ const express = require("express");
 const mysql = require("mysql");
 const bodyParser = require("body-parser");
 
-const app = express();
-
 // Reads MySQL config file
 const raw = fs.readFileSync('config.json');
 const config = JSON.parse(raw);
 
 const pool = mysql.createPool(config);
+const app = express();
 app.use(bodyParser.json());
 
 // Fetches all articles, or the given article identified with article_id in the URI
 app.get("/article/:id?", (req: any, res: any) => {
-  console.log("Fetched request form server");
+  console.log("Recieved GET-request from client");
   pool.getConnection((err: any, connection: any) => {
     console.log("Connected to database");
     if(err){
@@ -43,18 +42,17 @@ app.get("/article/:id?", (req: any, res: any) => {
 });
 
 // Creates a new article
-// Format: title: String, article_text: string, importance: integer
+// Format: title: string, article_text: string, importance: integer
 app.post("/article", (req: any, res: any) =>{
   console.log("Recieved POST-request from client");
-  console.log("..." + req.body.title + " " + req.body.article_text + " " + req.body.importance);
   pool.getConnection((err: any, connection: any) => {
     if(err){
       console.log("Connection error");
       res.json({error: "Connection error"});
     } else {
       console.log("Established connection to database");
-      const val = [req.body.title, req.body.article_text, req.body.importance];
       const query = "INSERT INTO article (title, article_text, importance) VALUES (?,?,?)";
+      const val = [req.body.title, req.body.article_text, req.body.importance];
       connection.query(query, val, err => {
         connection.release();
         if(err) {
@@ -82,8 +80,8 @@ app.delete("/article/:id", (req: any, res: any) => {
       const query = `DELETE FROM article WHERE article_id = ?;`;
       const val = req.params.id;
       connection.query(query, val, err => {
+        connection.release();
         if(err) {
-          connection.release();
           console.log(err);
           res.status(500);
           res.json({error: "Error with query"});
@@ -97,17 +95,17 @@ app.delete("/article/:id", (req: any, res: any) => {
 });
 
 // Updates a given article identified with article_id in the URI
-// Format: title: String, article_text: string, importance: integer
+// Format: title: string, article_text: string, importance: integer
 app.put("/article/:id", (req: any, res: any) => {
-  console.log("Recieved PUT-request form client");
+  console.log("Recieved PUT-request from client");
   pool.getConnection((err: any, connection: any) => {
     if(err){
       console.log("Connection error");
       res.json({error: "Connection error"});
     } else {
       console.log("Established connection to database");
-      const val = [req.body.title, req.body.article_text, req.body.importance, req.params.id];
       const query = `UPDATE article SET title = ?, article_text = ?, importance = ? WHERE article_id = ?;`;
+      const val = [req.body.title, req.body.article_text, req.body.importance, req.params.id];
       connection.query(query, val, err => {
         connection.release();
          if(err) {

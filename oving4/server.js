@@ -1,9 +1,15 @@
-var express = require("express");
-var mysql = require("mysql");
-var bodyParser = require("body-parser");
-var jwt = require("jsonwebtoken");
+const express = require("express");
+const mysql = require("mysql");
+const bodyParser = require("body-parser");
+const jwt = require("jsonwebtoken");
+const fs = require("fs");
 var app = express();
 app.use(bodyParser.json()); // for å tolke JSON i body
+
+// Setter opp mysql kobling
+const raw = fs.readFileSync('config.json');
+const config = JSON.parse(raw);
+const pool = mysql.createPool(config);
 
 // Burde vært ekte sertifikat, lest fra config...
 let privateKey = (publicKey = "shhhhhverysecret");
