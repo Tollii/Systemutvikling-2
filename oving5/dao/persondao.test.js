@@ -56,7 +56,7 @@ test("add person to db", done => {
     console.log(
       "Test callback: status=" + status + ", data=" + JSON.stringify(data)
     );
-    expect(data.affectedRows).toBeGreaterThanOrEqual(1);
+    expect(data.affectedRows).toBeLessThanOrEqual(1);
     done();
   }
 
@@ -73,7 +73,27 @@ test("get all persons from db", done => {
     );
     expect(data.length).toBeGreaterThanOrEqual(2);
     done();
-  }
-
+  };
   personDao.getAll(callback);
+});
+
+test("Delete one person from db", done => {
+  const callback = (status, data) => {
+    console.log("Test callback: status=" + status + ", data.length=" + data.length);
+    expect(data.affectedRows).toBeLessThanOrEqual(1);
+    done();
+  }
+  personDao.deleteOne(1, callback);
+});
+
+test("Update one entry in db", done => {
+  const callback = (status, data) => {
+    console.log("Test callback: status=" + status + ", data=" + JSON.stringify(data));
+    expect(data.affectedRows).toBe(1)
+    done();
+  }
+  personDao.updateOne(
+    {navn: "Nei", alder:1, adresse: "Gata 2"}, {id: 99},
+    callback
+  );
 });
