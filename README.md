@@ -13,7 +13,7 @@
 
 * Øving 6 - [MMI - Uniform Design](/oving6)
 
-* Øving 7 - ...
+* Øving 7 - [Static typechecking and functional algorithms](/oving7)
 
 * Øving 8 - [MMI - Interaction Design](/oving8)
 
