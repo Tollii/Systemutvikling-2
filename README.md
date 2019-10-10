@@ -17,7 +17,7 @@
 
 * Øving 8 - [MMI - Interaction Design](/oving8)
 
-* Øving 9 - ...
+* Øving 9 - React
 
 * Øving 10 - [MMI - Testing](/oving10)
 
