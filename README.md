@@ -21,7 +21,7 @@
 
 * Øving 10 - MMI - Testing
 
-* Øving 11 - [React - Updating components](/assignment_12)
+* Øving 11 - [React - Updating components](/assignment_11)
 
 
 
